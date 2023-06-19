@@ -122,7 +122,7 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="/opt/homebrew/opt/postgresql@15/bin:/Users/javierguzman/.local/bin:$PATH"
 export PGDATA='/usr/local/var/postgres'
 
-bindkey -s ^z "tmux-sessionizer\n"
+bindkey -s ^z "tmux-sessionizer.sh\n"
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

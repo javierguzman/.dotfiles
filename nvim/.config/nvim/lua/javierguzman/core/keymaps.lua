@@ -47,7 +47,7 @@ keymap.set("v", "J", ":m'>+1<CR>gv=gv")
 keymap.set("v", "K", ":m'<-2<CR>gv=gv")
 
 --our fzf
-keymap.set("n", "<leader>z", ":silent !tmux neww tmux-sessionizer<CR>")
+keymap.set("n", "<leader>F", ":silent !tmux neww tmux-sessionizer.sh<CR>")
 
 -- make it executable
 keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
