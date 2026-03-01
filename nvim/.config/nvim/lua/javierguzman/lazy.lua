@@ -127,25 +127,34 @@ require("lazy").setup({
 
 	-- ai chat assistant
 	{
-		"yetone/avante.nvim",
+		"olimorris/codecompanion.nvim",
 		event = "VeryLazy",
-		build = "make",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			"MunifTanjim/nui.nvim",
-			"MeanderingProgrammer/render-markdown.nvim",
-			"nvim-telescope/telescope.nvim",
+			"nvim-treesitter/nvim-treesitter",
 		},
 		opts = {
-			provider = "claude",
-			providers = {
-				claude = {
-					model = "claude-sonnet-4-20250514",
-					extra_request_body = {
-						max_tokens = 16000,
-					},
-				},
+			adapters = {
+				anthropic = function()
+					return require("codecompanion.adapters").extend("anthropic", {
+						env = { api_key = "ANTHROPIC_API_KEY" },
+						schema = {
+							model = { default = "claude-sonnet-4-20250514" },
+							max_tokens = { default = 16000 },
+						},
+					})
+				end,
 			},
+			strategies = {
+				chat = { adapter = "anthropic" },
+				inline = { adapter = "anthropic" },
+			},
+		},
+		keys = {
+			{ "<leader>aa", "<cmd>CodeCompanionChat Toggle<cr>", mode = { "n", "v" }, desc = "Toggle AI chat" },
+			{ "<leader>ae", "<cmd>CodeCompanion<cr>",           mode = { "n", "v" }, desc = "Inline AI edit" },
+			{ "<leader>ap", "<cmd>CodeCompanionActions<cr>",    mode = { "n", "v" }, desc = "AI action palette" },
+			{ "<leader>ac", "<cmd>CodeCompanionChat Add<cr>",   mode = "v",          desc = "Add selection to chat" },
 		},
 	},
 
