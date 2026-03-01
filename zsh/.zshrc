@@ -80,6 +80,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(
 git
 zsh-autosuggestions
+kubectl
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -109,6 +110,9 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias coreserver="ssh root@65.108.213.97"
+alias theme="alacritty-theme-toggle.sh"
+
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -121,9 +125,42 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 export PATH="/opt/homebrew/opt/postgresql@15/bin:/Users/javierguzman/.local/bin:$PATH"
 export PGDATA='/usr/local/var/postgres'
+export AWS_DEFAULT_PROFILE=terraform
+
+# API Keys
+export ANTHROPIC_API_KEY="your-api-key-here"
 
 bindkey -s ^z "tmux-sessionizer.sh\n"
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(pyenv init --path)"
+
+# SSH AGENT FOR YUBIKEY
+export SSH_ENV="$HOME/.ssh/agent.env" # custom path we choose it
+
+function start_ssh_agent() {
+  echo "Starting new ssh-agent..."
+  ssh-agent -s -P '/opt/homebrew/lib/libykcs*.dylib,/opt/homebrew/Cellar/yubico-piv-tool/*/lib/*.dylib' > "$SSH_ENV"
+  chmod 600 "$SSH_ENV"
+  source "$SSH_ENV" > /dev/null
+
+  echo "Adding YubiKey PIV key to ssh-agent..."
+  ssh-add -s /opt/homebrew/lib/libykcs11.dylib
+}
+
+# Load existing agent if available and alive
+if [ -f "$SSH_ENV" ]; then
+  source "$SSH_ENV" > /dev/null
+  if ! kill -0 "$SSH_AGENT_PID" 2>/dev/null; then
+    start_ssh_agent
+  fi
+else
+  start_ssh_agent
+fi
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/javierguzman/.cache/lm-studio/bin"
+export ANDROID_HOME=/Users/$USER/Library/Android/sdk
+export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"

@@ -23,16 +23,6 @@ keymap.set("n", "<C--", "<ZoomOut>")
 --nvimtree
 keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>")
 
--- telescope
-local builtin = require("telescope.builtin")
-
-keymap.set("n", "<leader>ff", builtin.find_files, {})
-keymap.set("n", "<leader>fg", builtin.live_grep, {})
-keymap.set("n", "<leader>fs", builtin.grep_string, {})
-keymap.set("n", "<leader>fb", builtin.buffers, {})
-keymap.set("n", "<leader>fh", builtin.help_tags, {})
-keymap.set("n", "<leader>fd", builtin.diagnostics, {})
-
 -- handy stuff; copy and paste in next line directly
 keymap.set("n", "<leader>m", "o<ESC>P<CR>")
 -- paste and keep register value
