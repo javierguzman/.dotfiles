@@ -20,7 +20,7 @@ mason.setup()
 
 mason_lspconfig.setup({
 	ensure_installed = {
-		"tsserver",
+		"ts_ls",
 		"html",
 		"cssls",
 		"tailwindcss",
@@ -43,8 +43,7 @@ mason_null_ls.setup({
 	ensure_installed = {
 		"prettier",
 		"stylua",
-		"eslint_d",
-		"tflint",
+		"eslint",
 		"ansible-lint",
 		"goimports",
 		"clang-format",

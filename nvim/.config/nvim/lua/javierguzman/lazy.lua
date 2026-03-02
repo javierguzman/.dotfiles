@@ -15,10 +15,22 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	-- colorscheme (loaded first)
 	{
-		"bluz71/vim-nightfly-guicolors",
+		"folke/tokyonight.nvim",
 		priority = 1000,
 		config = function()
-			vim.cmd("colorscheme nightfly")
+			require("tokyonight").setup({ style = "night" })
+			vim.cmd("colorscheme tokyonight-night")
+
+			-- toggle between dark (night) and light (day) with <leader>tt
+			vim.keymap.set("n", "<leader>tt", function()
+				if vim.o.background == "dark" then
+					vim.cmd("colorscheme tokyonight-day")
+					vim.o.background = "light"
+				else
+					vim.cmd("colorscheme tokyonight-night")
+					vim.o.background = "dark"
+				end
+			end, { desc = "Toggle dark/light theme" })
 		end,
 	},
 
@@ -184,6 +196,51 @@ require("lazy").setup({
 		keys = {
 			{ "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
 		},
+	},
+
+	-- floating cmdline, search, and notifications
+	{
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"rcarriga/nvim-notify",
+		},
+		opts = {},
+	},
+
+	-- floating filename in top-right corner of each window
+	{
+		"b0o/incline.nvim",
+		event = "BufReadPost",
+		config = function()
+			require("incline").setup({
+				hide = { cursorline = true },
+				window = { margin = { horizontal = 1, vertical = 0 } },
+				render = function(props)
+					local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
+					if filename == "" then filename = "[No Name]" end
+					local icon, icon_color = require("nvim-web-devicons").get_icon_color(filename)
+					local modified = vim.bo[props.buf].modified
+					return {
+						icon and { " ", icon, " ", guibg = icon_color, guifg = "#1a1b26" } or "",
+						" ",
+						{ filename, gui = modified and "bold" or "NONE" },
+						modified and { " [+]", guifg = "#e0af68" } or "",
+						" ",
+					}
+				end,
+			})
+		end,
+	},
+
+	-- status line
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("javierguzman.plugins.lualine")
+		end,
 	},
 
 	-- git

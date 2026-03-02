@@ -6,7 +6,7 @@ end
 
 -- for conciseness
 local formatting = null_ls.builtins.formatting -- to setup formatters
-local diagnostics = null_ls.builtins.diagnostics -- to setup linters
+local diagnostics = null_ls.builtins.diagnostics -- to setup linters (flake8/tflint removed; no longer in none-ls builtins)
 
 -- to setup format on save
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -18,32 +18,12 @@ null_ls.setup({
 		--  to disable file types use
 		--  "formatting.prettier.with({disabled_filetypes = {}})" (see null-ls docs)
 		formatting.black, -- python formatter
-		diagnostics.flake8,
 		formatting.prettier, -- js/ts formatter
 		formatting.stylua, -- lua formatter
-		diagnostics.eslint_d.with({ -- js/ts linter
-			condition = function(utils)
-				return utils.root_has_file(
-					".eslintrc.js",
-					".eslintrc.cjs",
-					".eslintrc.json",
-					".eslintrc.yaml",
-					".eslintrc.yml",
-					"eslint.config.js",
-					"eslint.config.mjs",
-					"eslint.config.cjs"
-				)
-			end,
-		}),
 		formatting.goimports, -- go formatter (imports + gofmt)
 		formatting.clang_format, -- c/c++ formatter
 		null_ls.builtins.formatting.mix, -- elixir formatter
 		formatting.terraform_fmt, -- terraform formatter
-		diagnostics.tflint.with({ -- terraform linter
-			condition = function(utils)
-				return utils.root_has_file(".tflint.hcl")
-			end,
-		}),
 		diagnostics.ansiblelint.with({ -- ansible linter
 			condition = function(utils)
 				return utils.root_has_file(".ansible-lint", "ansible.cfg", "site.yml", "playbook.yml")
