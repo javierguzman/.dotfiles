@@ -29,10 +29,10 @@ shift + alt - t : yabai -m window --toggle float --grid 4:4:1:1:2:2
 shift + alt - m : ~/.local/bin/yabai-maximize-toggle.sh
 
 # snap to left half (mode 2)
-shift + alt - left  : yabai -m window --grid 1:2:0:0:1:1
+shift + ctrl + alt - left  : yabai -m window --grid 1:2:0:0:1:1
 
 # snap to right half (mode 2)
-shift + alt - right : yabai -m window --grid 1:2:1:0:1:1
+shift + ctrl + alt - right : yabai -m window --grid 1:2:1:0:1:1
 
 # balance out tree of windows
 shift + alt - e : yabai -m space --balance

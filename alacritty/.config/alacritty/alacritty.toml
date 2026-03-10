@@ -20,4 +20,7 @@ style = { shape = "Block", blinking = "On" }
 bindings = [
   { key = "Left",  mods = "Alt", chars = "\u001bb" },
   { key = "Right", mods = "Alt", chars = "\u001bf" },
+  { key = "Period", mods = "Alt", chars = "\u001b." },
+  { key = "Comma",  mods = "Alt", chars = "\u001b," },
+  { key = "Tab",    mods = "Alt", chars = "\u001b\t" },
 ]
