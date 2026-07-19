@@ -1,1 +1,3 @@
 exit
+stty erase ^?
+exit

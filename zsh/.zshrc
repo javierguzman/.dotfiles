@@ -110,7 +110,8 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias coreserver="ssh root@65.108.213.97"
+alias ssh="TERM=xterm ssh"
+alias coreserver="ssh -I /opt/homebrew/lib/libykcs11.dylib -p 2233 coreserver@65.108.213.97"
 alias theme="alacritty-theme-toggle.sh"
 
 
@@ -126,9 +127,6 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="/opt/homebrew/opt/postgresql@15/bin:/Users/javierguzman/.local/bin:$PATH"
 export PGDATA='/usr/local/var/postgres'
 export AWS_DEFAULT_PROFILE=terraform
-
-# API Keys
-export ANTHROPIC_API_KEY="your-api-key-here"
 
 bindkey -s ^z "tmux-sessionizer.sh\n"
 
@@ -164,3 +162,4 @@ export PATH="$PATH:/Users/javierguzman/.cache/lm-studio/bin"
 export ANDROID_HOME=/Users/$USER/Library/Android/sdk
 export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+export PATH="$(brew --prefix llvm)/bin:$PATH"
