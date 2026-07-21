@@ -73,3 +73,5 @@ Space+F       Open project picker (nvim)
 ## Shortcuts
 
 See [SHORTCUTS.md](https://github.com/javierguzman/dev-machine-setup/blob/main/SHORTCUTS.md) in the dev-machine-setup repo for the full cheatsheet — tmux, Neovim, and window management.
+
+.
