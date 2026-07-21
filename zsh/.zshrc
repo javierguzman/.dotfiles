@@ -111,7 +111,7 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias ssh="TERM=xterm ssh"
-alias coreserver="ssh -I /opt/homebrew/lib/libykcs11.dylib -p 2233 coreserver@65.108.213.97"
+alias coreserver="ssh coreserver"
 alias theme="alacritty-theme-toggle.sh"
 
 
@@ -137,14 +137,31 @@ eval "$(pyenv init --path)"
 # SSH AGENT FOR YUBIKEY
 export SSH_ENV="$HOME/.ssh/agent.env" # custom path we choose it
 
+# macOS ships an ssh-agent/ssh-add without FIDO2 support; Homebrew's build has it.
+# Linux's distro-packaged openssh already has FIDO2 support built in.
+if [[ "$OSTYPE" == darwin* ]]; then
+  SSH_AGENT_BIN="/opt/homebrew/bin/ssh-agent"
+  SSH_ADD_BIN="/opt/homebrew/bin/ssh-add"
+  PKCS11_PROVIDER_GLOB='/opt/homebrew/lib/libykcs*.dylib,/opt/homebrew/Cellar/yubico-piv-tool/*/lib/*.dylib'
+  PKCS11_PROVIDER='/opt/homebrew/lib/libykcs11.dylib'
+else
+  SSH_AGENT_BIN="ssh-agent"
+  SSH_ADD_BIN="ssh-add"
+  PKCS11_PROVIDER_GLOB='/usr/lib/x86_64-linux-gnu/libykcs*.so'
+  PKCS11_PROVIDER='/usr/lib/x86_64-linux-gnu/libykcs11.so'
+fi
+
 function start_ssh_agent() {
   echo "Starting new ssh-agent..."
-  ssh-agent -s -P '/opt/homebrew/lib/libykcs*.dylib,/opt/homebrew/Cellar/yubico-piv-tool/*/lib/*.dylib' > "$SSH_ENV"
+  "$SSH_AGENT_BIN" -s -P "$PKCS11_PROVIDER_GLOB" > "$SSH_ENV"
   chmod 600 "$SSH_ENV"
   source "$SSH_ENV" > /dev/null
 
   echo "Adding YubiKey PIV key to ssh-agent..."
-  ssh-add -s /opt/homebrew/lib/libykcs11.dylib
+  "$SSH_ADD_BIN" -s "$PKCS11_PROVIDER"
+
+  echo "Adding YubiKey FIDO2 resident keys to ssh-agent..."
+  "$SSH_ADD_BIN" -K
 }
 
 # Load existing agent if available and alive
