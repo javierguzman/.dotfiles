@@ -4,6 +4,33 @@
 ctrl + alt - right : yabai -m window --focus next || yabai -m window --focus first
 ctrl + alt - left  : yabai -m window --focus prev || yabai -m window --focus last
 
+# directional focus - just look, don't move the window (west/south/north/east)
+# passed through untouched in Alacritty so tmux (M-hjkl) still gets these keys
+alt - h [
+    "Alacritty" ~
+    "Ghostty" ~
+    "iTerm2" ~
+    *           : yabai -m window --focus west
+]
+alt - j [
+    "Alacritty" ~
+    "Ghostty" ~
+    "iTerm2" ~
+    *           : yabai -m window --focus south
+]
+alt - k [
+    "Alacritty" ~
+    "Ghostty" ~
+    "iTerm2" ~
+    *           : yabai -m window --focus north
+]
+alt - l [
+    "Alacritty" ~
+    "Ghostty" ~
+    "iTerm2" ~
+    *           : yabai -m window --focus east
+]
+
 #change focus between external displays (left and right)
 alt - s: yabai -m display --focus west
 alt - g: yabai -m display --focus east
@@ -91,6 +118,6 @@ shift + alt - 7 : yabai -m window --space 7;
 # -- Starting/Stopping/Restarting Yabai --
 
 # stop/start/restart yabai
-ctrl + alt - q : brew services stop yabai
-ctrl + alt - s : brew services start yabai
-ctrl + alt - r : brew services restart yabai
+ctrl + alt - q : yabai --stop-service
+ctrl + alt - s : yabai --start-service
+ctrl + alt - r : yabai --restart-service

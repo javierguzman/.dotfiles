@@ -41,3 +41,27 @@ keymap.set("n", "<leader>F", ":silent !tmux neww tmux-sessionizer.sh<CR>")
 
 -- make it executable
 keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+
+-- switch to previous file (alternative to Ctrl-^, which can be unreliable
+-- to type on non-US keyboard layouts through a terminal)
+keymap.set("n", "<leader><leader>", ":b#<CR>", { desc = "Switch to previous file" })
+
+-- run current file (saves first) - dispatches by filetype, add more as needed
+local run_commands = {
+	python = "uv run",
+	javascript = "node",
+	typescript = "npx tsx",
+	go = "go run",
+	sh = "bash",
+}
+
+keymap.set("n", "<leader>rr", function()
+	local ft = vim.bo.filetype
+	local runner = run_commands[ft]
+	if not runner then
+		vim.notify("No run command configured for filetype: " .. ft, vim.log.levels.WARN)
+		return
+	end
+	vim.cmd("write")
+	vim.cmd("split | terminal " .. runner .. " " .. vim.fn.shellescape(vim.fn.expand("%")))
+end, { desc = "Run current file" })

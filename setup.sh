@@ -8,3 +8,9 @@ if [[ -z $DOTFILES ]]; then
 fi
 
 STOW_FOLDERS=$STOW_FOLDERS DOTFILES=$DOTFILES $DOTFILES/install.sh
+
+# Run a private companion dotfiles setup if one happens to exist on this
+# machine. Not every machine has one; this is a no-op when it doesn't.
+if [[ -x $HOME/.private-dotfiles/setup.sh ]]; then
+    $HOME/.private-dotfiles/setup.sh
+fi

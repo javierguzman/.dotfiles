@@ -117,6 +117,10 @@ alias theme="alacritty-theme-toggle.sh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Secrets (API keys, etc.) - lives outside ~/.dotfiles entirely, never tracked by git.
+# Create it with e.g.: echo 'export ANTHROPIC_API_KEY="sk-ant-..."' > ~/.zshrc.secrets
+[[ ! -f ~/.zshrc.secrets ]] || source ~/.zshrc.secrets
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
@@ -180,3 +184,6 @@ export ANDROID_HOME=/Users/$USER/Library/Android/sdk
 export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
 export PATH="$(brew --prefix llvm)/bin:$PATH"
+
+# Added by cua-driver-rs installer — see https://github.com/trycua/cua
+export PATH="/Users/javierguzman/.local/bin:$PATH"

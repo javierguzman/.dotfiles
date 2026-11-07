@@ -74,9 +74,19 @@ require("lazy").setup({
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+			"nvim-telescope/telescope-file-browser.nvim",
 		},
 		config = function()
 			require("javierguzman.plugins.telescope")
+		end,
+	},
+
+	-- oil (edit a directory as a buffer)
+	{
+		"stevearc/oil.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("javierguzman.plugins.oil")
 		end,
 	},
 
