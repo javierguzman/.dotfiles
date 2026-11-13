@@ -1,4 +1,9 @@
- #!/usr/bin/env bash
+#!/usr/bin/env bash
+# Pick a project in ~/Projects and go to its tmux session.
+# A new session gets two windows: "editor" (nvim .) and "terminal" (a shell).
+# When the session exists, the script jumps to it.
+# Usage: tmux-sessionizer.sh [project-dir]
+#   Shell: Ctrl+z (zshrc)   tmux: Prefix + f (popup, also inside Neovim)
 
 if [[ $# -eq 1 ]]; then
     selected=$1
@@ -10,16 +15,19 @@ if [[ -z $selected ]]; then
     exit 0
 fi
 
-selected_name=$(basename "$selected" | tr . _)
-tmux_running=$(pgrep tmux)
+# tmux does not allow "." or ":" in session names
+selected_name=$(basename "$selected" | tr '.:' '__')
 
-if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-    tmux new-session -s $selected_name -c $selected
-    exit 0
+if ! tmux has-session -t="$selected_name" 2> /dev/null; then
+    tmux new-session -ds "$selected_name" -n editor -c "$selected"
+    # send-keys: after :q, the window keeps a shell in the project folder
+    tmux send-keys -t "=$selected_name:editor" "nvim ." Enter
+    tmux new-window -d -t "=$selected_name:" -n terminal -c "$selected"
+    tmux select-window -t "=$selected_name:editor"
 fi
 
-if ! tmux has-session -t=$selected_name 2> /dev/null; then
-    tmux new-session -ds $selected_name -c $selected
+if [[ -n $TMUX ]]; then
+    tmux switch-client -t "=$selected_name"
+else
+    tmux attach-session -t "=$selected_name"
 fi
-
-tmux switch-client -t $selected_name   

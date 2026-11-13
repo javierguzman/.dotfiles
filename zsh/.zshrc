@@ -114,6 +114,22 @@ alias ssh="TERM=xterm ssh"
 alias coreserver="ssh coreserver"
 alias theme="alacritty-theme-toggle.sh"
 
+# clone <url> [folder]: git clone into ~/Projects, then cd into the clone.
+# The folder name comes from the URL when you do not give one.
+function clone() {
+  if [[ -z $1 ]]; then
+    echo "usage: clone <url> [folder]" >&2
+    return 1
+  fi
+  local name=${2:-${${1%/}:t:r}}   # last URL part without ".git"
+  local dir=~/Projects/$name
+  if [[ -e $dir ]]; then
+    echo "clone: $dir already exists" >&2
+    return 1
+  fi
+  git clone "$1" "$dir" && cd "$dir"
+}
+
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
