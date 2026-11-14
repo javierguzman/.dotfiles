@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Pick a project in ~/Projects and go to its tmux session.
-# A new session gets two windows: "editor" (nvim .) and "terminal" (a shell).
+# A new session gets three windows: "editor" (nvim .), "ai" (a shell for an
+# AI agent), and "terminal" (a shell).
 # When the session exists, the script jumps to it.
 # Usage: tmux-sessionizer.sh [project-dir]
 #   Shell: Ctrl+z (zshrc)   tmux: Prefix + f (popup, also inside Neovim)
@@ -22,6 +23,7 @@ if ! tmux has-session -t="$selected_name" 2> /dev/null; then
     tmux new-session -ds "$selected_name" -n editor -c "$selected"
     # send-keys: after :q, the window keeps a shell in the project folder
     tmux send-keys -t "=$selected_name:editor" "nvim ." Enter
+    tmux new-window -d -t "=$selected_name:" -n ai -c "$selected"
     tmux new-window -d -t "=$selected_name:" -n terminal -c "$selected"
     tmux select-window -t "=$selected_name:editor"
 fi
