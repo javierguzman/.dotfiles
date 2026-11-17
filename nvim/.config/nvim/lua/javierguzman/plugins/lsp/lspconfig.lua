@@ -37,11 +37,16 @@ end
 local capabilities = cmp_nvim_lsp.default_capabilities()
 
 -- Change the Diagnostic symbols in the sign column (gutter)
-local signs = { Error = "✘ ", Warn = " ", Hint = "† ", Info = " " }
-for type, icon in pairs(signs) do
-	local hl = "DiagnosticSign" .. type
-	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-end
+vim.diagnostic.config({
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = "✘ ",
+			[vim.diagnostic.severity.WARN] = " ",
+			[vim.diagnostic.severity.HINT] = "† ",
+			[vim.diagnostic.severity.INFO] = " ",
+		},
+	},
+})
 
 -- Servers with default config (no extra settings needed)
 local simple_servers = {
@@ -55,6 +60,11 @@ local simple_servers = {
 	"terraformls",
 	"marksman",
 	"eslint",
+	"helm_ls",
+	"docker_compose_language_service",
+	"jsonls",
+	"dockerls",
+	"bashls", -- runs shellcheck when the shellcheck binary is installed
 }
 
 for _, server in ipairs(simple_servers) do
@@ -154,6 +164,7 @@ vim.lsp.config("lua_ls", {
 				globals = { "vim" },
 			},
 			workspace = {
+				checkThirdParty = false, -- do not ask to configure the environment (luv, etc.)
 				library = {
 					[vim.fn.expand("$VIMRUNTIME/lua")] = true,
 					[vim.fn.stdpath("config") .. "/lua"] = true,

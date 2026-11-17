@@ -36,7 +36,14 @@ mason_lspconfig.setup({
 		"terraformls",
 		"ansiblels",
 		"marksman",
+		"helm_ls",
+		"docker_compose_language_service",
+		"jsonls",
+		"bashls",
 	},
+	-- lspconfig.lua enables each server explicitly. Automatic enable also starts
+	-- servers that are not configured there (for example stylua --lsp, remark_ls).
+	automatic_enable = false,
 })
 
 mason_null_ls.setup({
@@ -47,6 +54,13 @@ mason_null_ls.setup({
 		"ansible-lint",
 		"goimports",
 		"clang-format",
+		"yamllint",
+		"markdownlint",
+		"hadolint",
+		"tflint",
+		"golangci-lint",
+		"shellcheck",
+		"shfmt",
+		"actionlint",
 	},
-	automatic_installation = true,
 })

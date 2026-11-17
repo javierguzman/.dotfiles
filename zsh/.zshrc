@@ -113,6 +113,9 @@ source $ZSH/oh-my-zsh.sh
 alias ssh="TERM=xterm ssh"
 alias coreserver="ssh coreserver"
 alias theme="alacritty-theme-toggle.sh"
+alias kc="kubectx"
+alias kn="kubens"
+alias ks="kubectl-setup"
 
 # clone <url> [folder]: git clone into ~/Projects, then cd into the clone.
 # The folder name comes from the URL when you do not give one.

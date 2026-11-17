@@ -1,6 +1,6 @@
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
 		"clone",
@@ -66,7 +66,7 @@ require("lazy").setup({
 			require("javierguzman.plugins.autopairs")
 		end,
 	},
-	{ "windwp/nvim-ts-autotag" },
+	{ "windwp/nvim-ts-autotag", opts = {} }, -- opts calls setup()
 
 	-- telescope
 	{
@@ -93,6 +93,7 @@ require("lazy").setup({
 	-- treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
+		lazy = false, -- the main branch does not support lazy loading
 		build = ":TSUpdate",
 		config = function()
 			require("javierguzman.plugins.treesitter")
@@ -251,6 +252,19 @@ require("lazy").setup({
 		config = function()
 			require("javierguzman.plugins.lualine")
 		end,
+	},
+
+	-- git diff viewer
+	{
+		"sindrets/diffview.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory" },
+		keys = {
+			{ "<leader>gv", "<cmd>DiffviewOpen<cr>", desc = "Diffview: working tree changes" },
+			{ "<leader>gm", "<cmd>DiffviewOpen origin/HEAD...HEAD<cr>", desc = "Diffview: branch vs main" },
+			{ "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "Diffview: current file history" },
+			{ "<leader>gc", "<cmd>DiffviewClose<cr>", desc = "Diffview: close" },
+		},
 	},
 
 	-- git

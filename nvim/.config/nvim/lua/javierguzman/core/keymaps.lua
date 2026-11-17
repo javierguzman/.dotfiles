@@ -22,6 +22,7 @@ keymap.set("n", "<C--", "<ZoomOut>")
 
 --nvimtree
 keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>")
+keymap.set("n", "<leader>E", ":NvimTreeFindFile<CR>")
 
 -- handy stuff; copy and paste in next line directly
 keymap.set("n", "<leader>m", "o<ESC>P<CR>")

@@ -24,6 +24,12 @@ null_ls.setup({
 		formatting.clang_format, -- c/c++ formatter
 		null_ls.builtins.formatting.mix, -- elixir formatter
 		formatting.terraform_fmt, -- terraform formatter
+		formatting.shfmt, -- shell formatter
+		diagnostics.yamllint, -- yaml linter
+		diagnostics.markdownlint, -- markdown linter
+		diagnostics.hadolint, -- dockerfile linter
+		diagnostics.actionlint, -- github actions linter
+		diagnostics.golangci_lint, -- go linter
 		diagnostics.ansiblelint.with({ -- ansible linter
 			condition = function(utils)
 				return utils.root_has_file(".ansible-lint", "ansible.cfg", "site.yml", "playbook.yml")
@@ -32,7 +38,7 @@ null_ls.setup({
 	},
 	-- configure format on save
 	on_attach = function(current_client, bufnr)
-		if current_client.supports_method("textDocument/formatting") then
+		if current_client:supports_method("textDocument/formatting") then
 			vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 			vim.api.nvim_create_autocmd("BufWritePre", {
 				group = augroup,

@@ -36,3 +36,29 @@ opt.splitright = true
 opt.splitbelow = true
 
 opt.iskeyword:append("-")
+
+-- helm: files under templates/ use the helm filetype when a Chart.yaml exists in a parent dir
+vim.filetype.add({
+	pattern = {
+		[".*/templates/.*%.ya?ml"] = function(path)
+			if vim.fs.find("Chart.yaml", { path = vim.fs.dirname(path), upward = true })[1] then
+				return "helm"
+			end
+		end,
+		[".*/templates/.*%.tpl"] = function(path)
+			if vim.fs.find("Chart.yaml", { path = vim.fs.dirname(path), upward = true })[1] then
+				return "helm"
+			end
+		end,
+	},
+})
+
+-- docker compose: docker_compose_language_service attaches only to the yaml.docker-compose filetype
+vim.filetype.add({
+	filename = {
+		["docker-compose.yml"] = "yaml.docker-compose",
+		["docker-compose.yaml"] = "yaml.docker-compose",
+		["compose.yml"] = "yaml.docker-compose",
+		["compose.yaml"] = "yaml.docker-compose",
+	},
+})
